@@ -8,25 +8,34 @@ st.set_page_config(page_title="Myanmar AI Astrology", page_icon="🔮", layout="
 # --- Custom CSS (Particles & UI Fixes) ---
 st.markdown("""
     <style>
-    /* Floating Particles Background Animation */
+    /* 1. Main App Background */
     .stApp {
-        background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-        overflow-x: hidden;
+        background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%) !important;
+        overflow: hidden;
     }
     
-    @keyframes move-twink-back {
-        from {background-position:0 0;}
-        to {background-position:-10000px 5000px;}
+    /* 2. Floating Stars Layer */
+    .stApp::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+        background-size: 500px 500px;
+        z-index: 0; /* Background layer */
+        animation: move-stars 150s linear infinite;
+        opacity: 0.6;
+        pointer-events: none;
     }
 
-    .stApp::after {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat top center;
-        z-index: -1;
-        animation: move-twink-back 200s linear infinite;
-        opacity: 0.4;
+    @keyframes move-stars {
+        from { background-position: 0 0; }
+        to { background-position: 10000px 5000px; }
+    }
+
+    /* 3. Content Visibility */
+    .main .block-container {
+        position: relative;
+        z-index: 1; /* Content အားလုံးကို Stars ရဲ့ အပေါ်မှာထားခြင်း */
     }
 
     /* Result Card Styling */
