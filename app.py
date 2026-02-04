@@ -40,7 +40,7 @@ st.markdown("""
 
     /* Light Mode မှာပါ စာသားတွေ အမြဲပေါ်နေအောင် Fixed လုပ်ခြင်း */
 	/* Label စာသားများ (ဥပမာ - သင့်အမည်၊ အိပ်မက်ရေးပါ) */
-	.stWidgetLabel p {
+	.stWidgetLabel {
 		color: #D4AF37 !important; /* အမြဲတမ်း ရွှေရောင် ဖြစ်နေစေရမည် */
 		font-weight: bold !important;
 		font-size: 1.1rem !important;
