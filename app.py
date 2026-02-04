@@ -41,7 +41,7 @@ st.markdown("""
         white-space: pre-wrap;
     }
 
-    h1 { color: #D4AF37 !important; text-align: center; font-size: 2.2em; text-shadow: 2px 2px 4px #000; }
+    h1 { color: #D4AF37 !important; text-align: center; font-size: 2em !important; text-shadow: 2px 2px 4px #000; }
 
     /* Tabs Styling - ပိုကျယ်သွားအောင် ပြင်ထားသည် */
     .stTabs [data-baseweb="tab-list"] { gap: 10px; }
