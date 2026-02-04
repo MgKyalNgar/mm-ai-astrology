@@ -22,7 +22,7 @@ st.markdown("""
         background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
         background-size: 500px 500px;
         z-index: 0; /* Background layer */
-        animation: move-stars 150s linear infinite;
+        animation: move-stars 300s linear infinite; /* Star Speed */
         opacity: 0.6;
         pointer-events: none;
     }
@@ -37,6 +37,14 @@ st.markdown("""
         position: relative;
         z-index: 1; /* Content အားလုံးကို Stars ရဲ့ အပေါ်မှာထားခြင်း */
     }
+
+    /* Light Mode မှာပါ စာသားတွေ အမြဲပေါ်နေအောင် Fixed လုပ်ခြင်း */
+	/* Label စာသားများ (ဥပမာ - သင့်အမည်၊ အိပ်မက်ရေးပါ) */
+	.stWidgetLabel p {
+		color: #D4AF37 !important; /* အမြဲတမ်း ရွှေရောင် ဖြစ်နေစေရမည် */
+		font-weight: bold !important;
+		font-size: 1.1rem !important;
+	}
 
     /* Result Card Styling */
     .result-card {
