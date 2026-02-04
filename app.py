@@ -1,6 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 import os
+import datetime
 
 # --- Page Config ---
 st.set_page_config(page_title="Myanmar AI Astrology", page_icon="🔮", layout="centered")
@@ -96,7 +97,32 @@ if api_key:
 else:
     st.error("API Key မတွေ့ပါ။ Settings ထဲမှာ GEMINI_API_KEY ထည့်ပေးပါ။")
 
+# --- Lucky Color Logic ---
+now = datetime.datetime.now()
+day_name = now.strftime("%A") # ဥပမာ - Wednesday
+
+lucky_data = {
+    "Monday": {"color": "ဖြူစင်သော အဖြူရောင်", "hex": "#FFFFFF", "text": "တနင်္လာ"},
+    "Tuesday": {"color": "တောက်ပသော အနီရောင်", "hex": "#FF0000", "text": "အင်္ဂါ"},
+    "Wednesday": {"color": "စိမ်းလန်းသော အစိမ်းရောင်", "hex": "#00FF00", "text": "ဗုဒ္ဓဟူး/ရာဟု"},
+    "Thursday": {"color": "ဝင်းပသော အဝါရောင်", "hex": "#FFFF00", "text": "ကြာသပတေး"},
+    "Friday": {"color": "ကြည်လင်သော အပြာရောင်", "hex": "#0000FF", "text": "သောကြာ"},
+    "Saturday": {"color": "နက်မှောင်သော ခရမ်းရောင်", "hex": "#800080", "text": "စနေ"},
+    "Sunday": {"color": "ရွှေအိုရောင်/လိမ္မော်ရောင်", "hex": "#FFA500", "text": "တနင်္ဂနွေ"}
+}
+
+today_lucky = lucky_data.get(day_name, lucky_data["Monday"])
+
+# --- Display Banner ---
+st.markdown(f"""
+    <div style="background-color: rgba(212, 175, 55, 0.1); border: 1px solid #D4AF37; padding: 10px; border-radius: 10px; text-align: center; margin-bottom: 20px;">
+        <span style="color: #D4AF37; font-size: 1.1rem;">✨ ယနေ့ <b>{today_lucky['text']}</b> နေ့အတွက် ကံကောင်းစေသောအရောင်မှာ <b style="color: {today_lucky['hex']}; text-shadow: 1px 1px 2px black;">{today_lucky['color']}</b> ဖြစ်ပါတယ် ✨</span>
+    </div>
+""", unsafe_allow_html=True)
+
+
 st.markdown("<h1>🔮 မြန်မာ့ဗေဒင်နှင့် ဓာတ်ရိုက်ဓာတ်ဆင် AI</h1>", unsafe_allow_html=True)
+
 
 # --- AI Instructions ---
 system_instruction = """
