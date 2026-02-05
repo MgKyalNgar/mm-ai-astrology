@@ -147,8 +147,7 @@ def get_ai_response(prompt, spinner_text):
         loading_placeholder.empty()
         if "429" in str(e):
             st.error("Gemini Free Limit ပြည့်သွားပါပြီ။ ခဏနားပြီးမှ ပြန်စမ်းပေးပါ")
-        else:
-            st.error(f"Error တက်သွားပါတယ်: {str(e)}")
+        else: st.error(f"Error တက်သွားပါတယ်: {str(e)}")
         return None
 
 
