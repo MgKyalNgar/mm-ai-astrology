@@ -124,14 +124,7 @@ st.markdown("<h1>🔮 မြန်မာ့ဗေဒင်နှင့် ဓာ
 
 
 # --- AI Instructions ---
-system_instruction = """
-မင်းက မြန်မာ့ရိုးရာ ဗေဒင်ပညာရှင် ယောကျ်ားလေးတစ်ယောက်ပါ။ 
-စကားပြောရင် 'ကျွန်တော်' နဲ့ 'ခင်ဗျာ' ကို သုံးရပါမယ်။ 
-နှုတ်ဆက်တဲ့အခါ 'မင်္ဂလာပါ [နာမည်] ခင်ဗျာ' လို့ပဲ သုံးပါ။ 
-အဖြေတွေကို ရေးတဲ့အခါ သက်ဆိုင်ရာ Emoji (🔮, ✨, 🌙, 🍀, 🧿, 🛡️,...) လေးတွေကို ဆွဲဆောင်မှုရှိရှိ ထည့်ပေးပါ။ 
-စာကြောင်းတွေကြားမှာ space အလွတ်တွေ အများကြီး မခြားပါနဲ့။
-စာကြောင်းတွေကို ကျစ်ကျစ်လျစ်လျစ်နဲ့ ဖတ်ရလွယ်အောင် ရေးပေးပါ။
-"""
+system_instruction = """ မင်းက မြန်မာ့ရိုးရာ ဗေဒင်ပညာရှင် ယောကျ်ားလေးတစ်ယောက်ပါ။ စကားပြောရင် 'ကျွန်တော်' နဲ့ 'ခင်ဗျာ' ကို သုံးရပါမယ်။ နှုတ်ဆက်တဲ့အခါ 'မင်္ဂလာပါ [နာမည်] ခင်ဗျာ' လို့ပဲ သုံးပါ။ အဖြေတွေကို ရေးတဲ့အခါ သက်ဆိုင်ရာ Emoji (🔮, ✨, 🌙, 🍀, 🧿, 🛡️,...) လေးတွေကို ဆွဲဆောင်မှုရှိရှိ ထည့်ပေးပါ။ စာကြောင်းတွေကြားမှာ space အလွတ်တွေ အများကြီး မခြားပါနဲ့။ စာကြောင်းတွေကို ကျစ်ကျစ်လျစ်လျစ်နဲ့ ဖတ်ရလွယ်အောင် ရေးပေးပါ။ """
 
 tab1, tab2, tab3 = st.tabs(["🌙 အိပ်မက်အဘိဓာန်", "✨ နေ့စဉ်ဟောစာတမ်း", "🛡️ ယတြာတောင်းရန်"])
 
@@ -207,5 +200,33 @@ with tab3:
         else:
             st.warning("အမည် ထည့်ပေးပါ ခင်ဗျာ။")
 
+# --- Viewer Counter & Share Button ---
 st.divider()
-st.caption("Developed with ❤️ by Mg Kyal Ngar | Astrology AI v2.5")
+
+# Counter အတွက် သင့် App Link ကို Encode လုပ်ပြီး ထည့်ပေးထားပါတယ်
+app_url = "https://myammar-ai-astrology-by-kyalngar.streamlit.app/"
+
+counter_html = f"""
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="color: #D4AF37; font-size: 0.8rem;">
+        Developed with ❤️ by Mg Kyal Ngar | Astrology AI v3.0
+    </div>
+    <div>
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url={app_url}&count_bg=%23D4AF37&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visitors&edge_flat=false" alt="Hits"/>
+    </div>
+</div>
+"""
+
+st.markdown(counter_html, unsafe_allow_html=True)
+
+# Facebook Share Button လေးပါ တစ်ခါတည်း လက်ဆောင်ထည့်ပေးလိုက်ပါတယ်
+share_button = f"""
+<div style="text-align: center; margin-top: 20px;">
+    <a href="https://www.facebook.com/sharer/sharer.php?u={app_url}" target="_blank">
+        <button style="background-color: #1877F2; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">
+            🔵 Facebook မှာ Share မယ်
+        </button>
+    </a>
+</div>
+"""
+st.markdown(share_button, unsafe_allow_html=True)
