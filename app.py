@@ -204,9 +204,6 @@ with tab3:
 st.divider()
 
 # Error မတက်အောင် Variable ကို အရင်ဆုံး သတ်မှတ်ပါသည်
-# သင့် App Link ထဲမှာ m နှစ်လုံး ဖြစ်နေတဲ့အတွက် အဲဒီအတိုင်းပဲ ထည့်ပေးထားပါတယ်
-app_url = "https://myanmar-ai-astrology-by-kyalngar.streamlit.app"
-
 # 1. Viewer Counter (Hits.seeyoufarm)
 # URL ကို Server နားလည်အောင် %Encoding လုပ်ထားရပါသည်
 encoded_url = "https%3A%2F%2Fmyanmar-ai-astrology-by-kyalngar.streamlit.app"
@@ -223,6 +220,7 @@ counter_html = f"""
 st.markdown(counter_html, unsafe_allow_html=True)
 
 # 2. Facebook Share Button
+app_url = "https://myanmar-ai-astrology-by-kyalngar.streamlit.app"
 share_button = f"""
 <div style="text-align: center; margin-top: 25px;">
     <a href="https://www.facebook.com/sharer/sharer.php?u={app_url}" target="_blank" style="text-decoration: none;">
