@@ -135,26 +135,45 @@ system_instruction = """
 
 tab1, tab2, tab3 = st.tabs(["🌙 အိပ်မက်အဘိဓာန်", "✨ နေ့စဉ်ဟောစာတမ်း", "🛡️ ယတြာတောင်းရန်"])
 
+def get_ai_response(prompt, spinner_text):
+    loading_placeholder = st.empty()
+    try:
+        # spinner_text ကို ဒီနေရာမှာ ပြန်သုံးထားပါတယ်
+        with st.spinner(spinner_text):
+            response = model.generate_content(prompt)
+            res_text = response.text
+            return res_text
+    except Exception as e:
+        loading_placeholder.empty()
+        if "429" in str(e):
+            st.error("Gemini Free Limit ပြည့်သွားပါပြီ။ ခဏနားပြီးမှ ပြန်စမ်းပေးပါ")
+        else:
+            st.error(f"Error တက်သွားပါတယ်: {str(e)}")
+        return None
+
+
 # --- Tab 1: Dream ---
 with tab1:
     user_dream = st.text_area("သင်မက်ခဲ့သည့် အိပ်မက်ကို ရေးပါ...", height=100)
     if st.button("နိမိတ်ဖတ်မယ် 🌙"):
         if user_dream:
-            with st.spinner('ကျွန်တော် တွက်ချက်ပေးနေပါတယ် ခင်ဗျာ...'):
-                prompt = f"{system_instruction} အိပ်မက်: '{user_dream}' ကို နိမိတ်ဖတ်ပေးပါ။"
-                response = model.generate_content(prompt)
-                res_text = response.text
+            prompt = f"{system_instruction} အိပ်မက်: '{user_dream}' ကို နိမိတ်ဖတ်ပေးပါ။"
+            res_text = get_ai_response(prompt, "ကျွန်တော် တွက်ချက်ပေးနေပါတယ် ခင်ဗျာ...")
+                
+            if res_text:    
                 st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
                 st.download_button("📂 ရလဒ်ကိုသိမ်းမယ်", res_text, file_name="dream_analysis.txt")
+         else:
+            st.warning("အိပ်မက်ကို ရေးပေးပါ ခင်ဗျာ။")
 
 # --- Tab 2: Daily Horoscope ---
 with tab2:
     day = st.selectbox("သင့်မွေးနေ့ (နေ့နံ) ရွေးပါ", ["တနင်္ဂနွေ", "တနင်္လာ", "အင်္ဂါ", "ဗုဒ္ဓဟူး", "ရာဟု", "ကြာသပတေး", "သောကြာ", "စနေ"])
     if st.button("ဟောစာတမ်းကြည့်မယ် ✨"):
-        with st.spinner('နက္ခတ်ကို ကြည့်ပေးနေပါတယ် ခင်ဗျာ...'):
-            prompt = f"{system_instruction} {day} သားသမီးတွေအတွက် ဒီနေ့အတွက် ဟောစာတမ်းကို အချစ်၊ စီးပွား၊ ကျန်းမာရေး ခွဲပြီး ဟောပေးပါ။"
-            response = model.generate_content(prompt)
-            res_text = response.text
+        prompt = f"{system_instruction} {day} သားသမီးတွေအတွက် ဒီနေ့အတွက် ဟောစာတမ်းကို အချစ်၊ စီးပွား၊ ကျန်းမာရေး ခွဲပြီး ဟောပေးပါ။"
+        res_text = get_ai_response(prompt, "နက္ခတ်ကို ကြည့်ပေးနေပါတယ် ခင်ဗျာ...")
+            
+        if res_text:
             st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
             st.download_button("📂 ဟောစာတမ်းသိမ်းမယ်", res_text, file_name="horoscope.txt")
 
@@ -180,10 +199,10 @@ with tab3:
     
     if st.button("ယတြာတောင်းမယ် 🛡️"):
         if user_name:
-            with st.spinner('ယတြာတွက်ချက်ပေးနေပါတယ် ခင်ဗျာ...'):
-                prompt = f"{system_instruction} အမည် {user_name} က {problem} ဖြစ်နေတာအတွက် အထိရောက်ဆုံး ယတြာပေးပါ။ အစမှာ 'မင်္ဂလာပါ {user_name} ခင်ဗျာ' လို့ နှုတ်ဆက်ပါ။"
-                response = model.generate_content(prompt)
-                res_text = response.text
+            prompt = f"{system_instruction} အမည် {user_name} က {problem} ဖြစ်နေတာအတွက် အထိရောက်ဆုံး ယတြာပေးပါ။ အစမှာ 'မင်္ဂလာပါ {user_name} ခင်ဗျာ' လို့ နှုတ်ဆက်ပါ။"
+            res_text = get_ai_response(prompt, "ယတြာတွက်ချက်ပေးနေပါတယ် ခင်ဗျာ...")
+                
+            if res_text:                
                 st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
                 st.download_button("📂 ယတြာကိုသိမ်းမယ်", res_text, file_name="yadaya.txt")
         else:
