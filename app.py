@@ -204,7 +204,7 @@ with tab3:
 st.divider()
 
 # Counter အတွက် သင့် App Link ကို Encode လုပ်ပြီး ထည့်ပေးထားပါတယ်
-app_url = "https://myammar-ai-astrology-by-kyalngar.streamlit.app/"
+app_url = "https://myanmar-ai-astrology-by-kyalngar.streamlit.app/"
 
 counter_html = f"""
 <div style="display: flex; justify-content: space-between; align-items: center;">
