@@ -196,16 +196,18 @@ with tab3:
             "ခရီးသွားလာရန်အခက်အခဲရှိခြင်း"
         ])
     
-    if st.button("ယတြာတောင်းမယ် 🛡️"):
-        if user_name:
-            prompt = f"{system_instruction} အမည် {user_name} က {problem} ဖြစ်နေတာအတွက် အထိရောက်ဆုံး ယတြာပေးပါ။ အစမှာ 'မင်္ဂလာပါ {user_name} ခင်ဗျာ' လို့ နှုတ်ဆက်ပါ။"
-            res_text = get_ai_response(prompt, "ယတြာတွက်ချက်ပေးနေပါတယ် ခင်ဗျာ...")
-                
-            if res_text:                
-                st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
-                st.download_button("📂 ယတြာကိုသိမ်းမယ်", res_text, file_name="yadaya.txt")
-		else:
-			st.warning("အမည် ထည့်ပေးပါ ခင်ဗျာ။")
+if st.button("ယတြာတောင်းမယ် 🛡️"):
+    if user_name:
+        prompt = f"{system_instruction} အမည် {user_name} က {problem} ဖြစ်နေတာအတွက် အထိရောက်ဆုံး ယတြာပေးပါ။ အစမှာ 'မင်္ဂလာပါ {user_name} ခင်ဗျာ' လို့ နှုတ်ဆက်ပါ။"
+        
+        # ကျွန်တော်တို့ တည်ဆောက်ထားတဲ့ Function ကို လှမ်းခေါ်ပါတယ်
+        res_text = get_ai_response(prompt, "ယတြာတွက်ချက်ပေးနေပါတယ် ခင်ဗျာ...")
+        
+        if res_text:
+            st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
+            st.download_button("📁 ယတြာကိုသိမ်းမယ်", res_text, file_name="yadaya.txt")
+    else:
+        st.warning("အမည် ထည့်ပေးပါ ခင်ဗျာ။")
 
 st.divider()
 st.caption("Developed with ❤️ by Mg Kyal Ngar | Astrology AI v2.5")
