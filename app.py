@@ -158,8 +158,8 @@ with tab1:
         if user_dream:
             prompt = f"{system_instruction} အိပ်မက်: '{user_dream}' ကို နိမိတ်ဖတ်ပေးပါ။"
             res_text = get_ai_response(prompt, "ကျွန်တော် တွက်ချက်ပေးနေပါတယ် ခင်ဗျာ...")
-                
-            if res_text:    
+            
+			if res_text:    
                 st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
                 st.download_button("📂 ရလဒ်ကိုသိမ်းမယ်", res_text, file_name="dream_analysis.txt")
 		else:
