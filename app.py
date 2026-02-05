@@ -162,7 +162,7 @@ with tab1:
             if res_text:    
                 st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
                 st.download_button("📂 ရလဒ်ကိုသိမ်းမယ်", res_text, file_name="dream_analysis.txt")
-        else:
+		else:
 			st.warning("အိပ်မက်ကို ရေးပေးပါ ခင်ဗျာ။")
 
 # --- Tab 2: Daily Horoscope ---
@@ -204,8 +204,8 @@ with tab3:
             if res_text:                
                 st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
                 st.download_button("📂 ယတြာကိုသိမ်းမယ်", res_text, file_name="yadaya.txt")
-        else:
-            st.warning("အမည် ထည့်ပေးပါ ခင်ဗျာ။")
+		else:
+			st.warning("အမည် ထည့်ပေးပါ ခင်ဗျာ။")
 
 st.divider()
 st.caption("Developed with ❤️ by Mg Kyal Ngar | Astrology AI v2.5")
