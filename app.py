@@ -3,9 +3,27 @@ import google.generativeai as genai
 import os
 import datetime
 import prompts
+import streamlit.components.v1 as components
 
 # --- Page Config ---
 st.set_page_config(page_title="Myanmar AI Astrology", page_icon="🔮", layout="centered")
+
+# --- PWA Mainframe Logic ---
+# ဤ Code သည် Browser ကို Install လုပ်ရန် (Add to Home Screen) လှုံ့ဆော်ပေးပါလိမ့်မည်
+st.markdown(f"""
+    <link rel="manifest" href="manifest.json">
+    <script>
+    if ('serviceWorker' in navigator) {{
+      window.addEventListener('load', function() {{
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {{
+          console.log('ServiceWorker registration successful');
+        }}, function(err) {{
+          console.log('ServiceWorker registration failed: ', err);
+        }});
+      }});
+    }}
+    </script>
+""", unsafe_allow_html=True)
 
 # --- Custom CSS (Particles & UI Fixes) ---
 st.markdown("""
