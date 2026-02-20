@@ -25,6 +25,21 @@ st.markdown(f"""
     </script>
 """, unsafe_allow_html=True)
 
+# --- Offline Support Service Worker Logic ---
+st.markdown("""
+    <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('./sw.js').then(function(reg) {
+          console.log('Service Worker Registered!', reg);
+        }).catch(function(err) {
+          console.log('Service Worker Failed!', err);
+        });
+      });
+    }
+    </script>
+""", unsafe_allow_html=True)
+
 # --- Custom CSS (Particles & UI Fixes) ---
 st.markdown("""
     <style>
