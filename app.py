@@ -159,16 +159,17 @@ st.markdown("<h1>🔮 မြန်မာ့ဗေဒင်နှင့် ဓာ
 tab1, tab2, tab3 = st.tabs(["🌙 အိပ်မက်အဘိဓာန်", "✨ နေ့စဉ်ဟောစာတမ်း", "🛡️ ယတြာတောင်းရန်"])
 
 # --- Helper Function for AI ---
-def get_ai_response(prompt):
-	loading_placeholder = st.empty()
+def get_ai_response(prompt, spinner_text="သင့်အတွက် တွက်ချက်နေပါသည်..."):
+    # loading_placeholder နဲ့ try သည် တစ်တန်းတည်း ဖြစ်ရမည်
+    loading_placeholder = st.empty()
     try:
-		with st.spinner("နက္ခတ်ဗေဒင်များ တွက်ချက်နေပါသည်..."):
-			response = model.generate_content(prompt)
-			return response.text
+        with st.spinner(spinner_text):
+            response = model.generate_content(prompt)
+            return response.text
     except Exception as e:
         loading_placeholder.empty()
         if "429" in str(e):
-            st.error("AI Tokan Free Limit ပြည့်သွားပါပြီ။ ခဏနားပြီးမှ ပြန်စမ်းပေးပါ")
+            st.error("AI Token Free Limit ပြည့်သွားပါပြီ။ ခဏနားပြီးမှ ပြန်စမ်းပေးပါ")
         else:
             st.error(f"Error တက်သွားပါတယ်: {str(e)}")
         return None
