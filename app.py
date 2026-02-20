@@ -2,6 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 import os
 import datetime
+import prompts
 
 # --- Page Config ---
 st.set_page_config(page_title="Myanmar AI Astrology", page_icon="🔮", layout="centered")
@@ -95,7 +96,7 @@ if api_key:
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel('models/gemini-2.5-flash')
 else:
-    st.error("API Key မတွေ့ပါ။ Settings ထဲမှာ GEMINI_API_KEY ထည့်ပေးပါ။")
+    st.error("API Key Not Found Error")
 
 # --- Lucky Color Logic ---
 now = datetime.datetime.now()
@@ -120,64 +121,78 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-
 st.markdown("<h1>🔮 မြန်မာ့ဗေဒင်နှင့် ဓာတ်ရိုက်ဓာတ်ဆင် AI</h1>", unsafe_allow_html=True)
-
-
-# --- AI Instructions ---
-system_instruction = """ မင်းက မြန်မာ့ရိုးရာ ဗေဒင်ပညာရှင် ယောကျ်ားလေးတစ်ယောက်ပါ။ စကားပြောရင် 'ကျွန်တော်' နဲ့ 'ခင်ဗျာ' ကို သုံးရပါမယ်။ နှုတ်ဆက်တဲ့အခါ 'မင်္ဂလာပါ [နာမည်] ခင်ဗျာ' လို့ပဲ သုံးပါ။ အဖြေတွေကို ရေးတဲ့အခါ သက်ဆိုင်ရာ Emoji (🔮, ✨, 🌙, 🍀, 🧿, 🛡️,...) လေးတွေကို ဆွဲဆောင်မှုရှိရှိ ထည့်ပေးပါ။ စာကြောင်းတွေကြားမှာ space အလွတ်တွေ အများကြီး မခြားပါနဲ့။ စာကြောင်းတွေကို ကျစ်ကျစ်လျစ်လျစ်နဲ့ ဖတ်ရလွယ်အောင် ရေးပေးပါ။ """
 
 tab1, tab2, tab3 = st.tabs(["🌙 အိပ်မက်အဘိဓာန်", "✨ နေ့စဉ်ဟောစာတမ်း", "🛡️ ယတြာတောင်းရန်"])
 
-def get_ai_response(prompt, spinner_text):
-    loading_placeholder = st.empty()
+# --- Helper Function for AI ---
+def get_ai_response(prompt):
+	loading_placeholder = st.empty()
     try:
-        with st.spinner(spinner_text):
+        with st.spinner("နက္ခတ်ဗေဒင်များ တွက်ချက်နေပါသည်..."):
             response = model.generate_content(prompt)
-            res_text = response.text
-            return res_text
+            return response.text
     except Exception as e:
         loading_placeholder.empty()
         if "429" in str(e):
-            st.error("Gemini Free Limit ပြည့်သွားပါပြီ။ ခဏနားပြီးမှ ပြန်စမ်းပေးပါ")
+            st.error("AI Tokan Free Limit ပြည့်သွားပါပြီ။ ခဏနားပြီးမှ ပြန်စမ်းပေးပါ")
         else:
             st.error(f"Error တက်သွားပါတယ်: {str(e)}")
         return None
 
+#  def get_ai_response(prompt, spinner_text):
+#    loading_placeholder = st.empty()
+#    try:
+#        with st.spinner(spinner_text):
+#            response = model.generate_content(prompt)
+#            res_text = response.text
+#            return res_text
+#    except Exception as e:
+#        loading_placeholder.empty()
+#        if "429" in str(e):
+#            st.error("AI Tokan Free Limit ပြည့်သွားပါပြီ။ ခဏနားပြီးမှ ပြန်စမ်းပေးပါ")
+#        else:
+#            st.error(f"Error တက်သွားပါတယ်: {str(e)}")
+#        return None
+
 
 # --- Tab 1: Dream ---
 with tab1:
-    user_dream = st.text_area("သင်မက်ခဲ့သည့် အိပ်မက်ကို ရေးပါ...", height=100)
+    user_dream = st.text_area("သင်မက်ခဲ့သည့် အိပ်မက်ကို ရေးပါ...", key="dream_input")
     if st.button("နိမိတ်ဖတ်မယ် 🌙"):
         if user_dream:
-            prompt = f"{system_instruction} အိပ်မက်: '{user_dream}' ကို နိမိတ်ဖတ်ပေးပါ။ ဆောင်ရန်ရှောင်ရန်၊ အကျိုးပေးဂဏန်း၊ ကောင်းဆိုးနိမိတ်နဲ့ သတိထားရမည့်အချက်တွေပါ သေချာပြောပြပေးပါ။"
-            res_text = get_ai_response(prompt, "ကျွန်တော် တွက်ချက်ပေးနေပါတယ် ခင်ဗျာ...")
-            
-            if res_text:
-                st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
-                st.download_button("📁 ရလဒ်ကိုသိမ်းမယ်", res_text, file_name="dream_analysis.txt")
+            full_prompt = prompts.DREAM_TEMPLATE.format(
+                system_instruction=prompts.SYSTEM_INSTRUCTION,
+                user_dream=user_dream
+            )
+            # Result ကို session state ထဲ သိမ်းသည်
+            st.session_state['dream_res'] = get_ai_response(full_prompt)
         else:
-            st.warning("အိပ်မက်ကို ရေးပေးပါ ခင်ဗျာ။")
+            st.warning("အိပ်မက်ကို အရင်ရေးပေးပါ ခင်ဗျာ။")
+
+    if 'dream_res' in st.session_state and st.session_state['dream_res']:
+        st.markdown(f"<div class='result-card'>{st.session_state['dream_res']}</div>", unsafe_allow_html=True)
+        st.download_button("📁 ရလဒ်ကိုသိမ်းမယ်", st.session_state['dream_res'], file_name="dream.txt")
 
 # --- Tab 2: Daily Horoscope ---
 with tab2:
-    day = st.selectbox("သင့်မွေးနေ့ (နေ့နံ) ရွေးပါ", ["တနင်္ဂနွေ", "တနင်္လာ", "အင်္ဂါ", "ဗုဒ္ဓဟူး", "ရာဟု", "ကြာသပတေး", "သောကြာ", "စနေ"])
+    day = st.selectbox("သင့်မွေးနေ့ ရွေးပါ", ["တနင်္ဂနွေ", "တနင်္လာ", "အင်္ဂါ", "ဗုဒ္ဓဟူး", "ရာဟု", "ကြာသပတေး", "သောကြာ", "စနေ"])
     if st.button("ဟောစာတမ်းကြည့်မယ် ✨"):
-        prompt = f"{system_instruction} {day} သားသမီးတွေအတွက် ဒီနေ့အတွက် ဟောစာတမ်းကို အချစ်ရေး၊ လူမှုရေး၊ ကျန်းမာရေး၊ စီးပွားရေးနဲ့ ကံကောင်းစေမယ့် အရောင်၊ ဂဏန်းတွေကို အသေးစိတ် ပြည့်ပြည့်စုံစုံ ဟောပေးပါ။"
-        res_text = get_ai_response(prompt, "နက္ခတ်ကို ကြည့်ပေးနေပါတယ် ခင်ဗျာ...")
+        full_prompt = prompts.HOROSCOPE_TEMPLATE.format(
+            system_instruction=prompts.SYSTEM_INSTRUCTION,
+            day=day
+        )
+        st.session_state['horo_res'] = get_ai_response(full_prompt)
             
-        if res_text:
-            st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
-            st.download_button("📂 ဟောစာတမ်းသိမ်းမယ်", res_text, file_name="horoscope.txt")
+    if 'horo_res' in st.session_state and st.session_state['horo_res']:
+        st.markdown(f"<div class='result-card'>{st.session_state['horo_res']}</div>", unsafe_allow_html=True)
+        st.download_button("📂 ဟောစာတမ်းသိမ်းမယ်", st.session_state['horo_res'], file_name="horoscope.txt")
 
-# --- Tab 3: Yadaya (ဓာတ်ရိုက်ဓာတ်ဆင်) ---
+# --- Tab 3: Yadaya ---
 with tab3:
-    col1, col2 = st.columns(2)
-    with col1:
-        user_name = st.text_input("သင့်အမည် (သို့မဟုတ်) နာမည်")
-    with col2:
-        # ထပ်တိုးပေးထားသော အခက်အခဲများ
-        problem = st.selectbox("ရင်ဆိုင်နေရသော အခက်အခဲ", [
+    u_name = st.text_input("သင့်အမည်")
+     # ထပ်တိုးပေးထားသော အခက်အခဲများ
+        prob = st.selectbox("ရင်ဆိုင်နေရသော အခက်အခဲ", [
             "စီးပွားရေးညံ့ခြင်း/ငွေကြေးခက်ခဲခြင်း", 
             "အချစ်ရေးအဆင်မပြေခြင်း", 
             "အိမ်ထောင်ရေးအဆင်မပြေခြင်း",
@@ -189,18 +204,22 @@ with tab3:
             "တရားရင်ဆိုင်နေရခြင်း",
             "ခရီးသွားလာရန်အခက်အခဲရှိခြင်း"
         ])
-
+    
     if st.button("ယတြာတောင်းမယ် 🛡️"):
-        if user_name:
-            prompt = f"{system_instruction} အမည် {user_name} က {problem} ဖြစ်နေတာအတွက် အထိရောက်ဆုံး ယတြာပေးပါ။ အစမှာ 'မင်္ဂလာပါ {user_name} ခင်ဗျာ' လို့ နှုတ်ဆက်ပါ။"
-            res_text = get_ai_response(prompt, "ယတြာတွက်ချက်ပေးနေပါတယ် ခင်ဗျာ...")
-            
-            if res_text:
-                st.markdown(f"<div class='result-card'>{res_text}</div>", unsafe_allow_html=True)
-                st.download_button("📁 ယတြာကိုသိမ်းမယ်", res_text, file_name="yadaya.txt")
+        if u_name:
+            full_prompt = prompts.YADAYA_TEMPLATE.format(
+                system_instruction=prompts.SYSTEM_INSTRUCTION,
+                user_name=u_name,
+                problem=prob
+            )
+            st.session_state['yadaya_res'] = get_ai_response(full_prompt)
         else:
             st.warning("အမည် ထည့်ပေးပါ ခင်ဗျာ။")
 
+    if 'yadaya_res' in st.session_state and st.session_state['yadaya_res']:
+        st.markdown(f"<div class='result-card'>{st.session_state['yadaya_res']}</div>", unsafe_allow_html=True)
+        st.download_button("📁 ယတြာကိုသိမ်းမယ်", st.session_state['yadaya_res'], file_name="yadaya.txt")
+        
 # --- Viewer Counter & Facebook Share Section ---
 # --- Footer Section (Revised Version) ---
 st.divider()
