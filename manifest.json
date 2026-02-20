@@ -1,0 +1,17 @@
+{
+  "name": "Myanmar AI Astrology",
+  "short_name": "MM-AI-Astro",
+  "description": "AI-powered Myanmar Astrology and Dream Analysis",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090A0F",
+  "theme_color": "#D4AF37",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2583/2583300.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
