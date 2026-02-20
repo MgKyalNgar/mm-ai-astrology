@@ -11,11 +11,11 @@ st.set_page_config(page_title="Myanmar AI Astrology", page_icon="🔮", layout="
 # --- PWA Mainframe Logic ---
 # ဤ Code သည် Browser ကို Install လုပ်ရန် (Add to Home Screen) လှုံ့ဆော်ပေးပါလိမ့်မည်
 st.markdown(f"""
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/app/manifest.json">
     <script>
     if ('serviceWorker' in navigator) {{
       window.addEventListener('load', function() {{
-        navigator.serviceWorker.register('/sw.js').then(function(registration) {{
+        navigator.serviceWorker.register('/app/sw.js').then(function(registration) {{
           console.log('ServiceWorker registration successful');
         }}, function(err) {{
           console.log('ServiceWorker registration failed: ', err);
