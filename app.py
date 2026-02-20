@@ -162,9 +162,9 @@ tab1, tab2, tab3 = st.tabs(["🌙 အိပ်မက်အဘိဓာန်", "
 def get_ai_response(prompt):
 	loading_placeholder = st.empty()
     try:
-        with st.spinner("နက္ခတ်ဗေဒင်များ တွက်ချက်နေပါသည်..."):
-            response = model.generate_content(prompt)
-            return response.text
+		with st.spinner("နက္ခတ်ဗေဒင်များ တွက်ချက်နေပါသည်..."):
+			response = model.generate_content(prompt)
+			return response.text
     except Exception as e:
         loading_placeholder.empty()
         if "429" in str(e):
